@@ -12,7 +12,7 @@
 
 # 📗 Table of Contents
 
-- [� Table of Contents](#-table-of-contents)
+- [📗 Table of Contents](#-table-of-contents)
 - [BLOG WEBSITE ](#blog-website-)
   - [🛠 Built With ](#-built-with-)
     - [Tech Stack ](#tech-stack-)
@@ -169,6 +169,6 @@ Contributions, issues, and feature requests are welcome!
 
 ## 📝 License <a name="license"></a>
 
-This project is [MIT](/LICENSE) licensed.
+This project is [MIT](./LICENSE) licensed.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
