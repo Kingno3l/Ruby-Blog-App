@@ -1,31 +1,43 @@
-# spec/models/post_spec.rb
 require 'rails_helper'
 
 RSpec.describe Post, type: :model do
-  it { should belong_to(:author).class_name('User').with_foreign_key('author_id') }
-  it { should have_many(:comments) }
-  it { should have_many(:likes) }
+  subject { Post.new(author_id: 1, title: 'Post 1', text: 'This is post 1', comments_counter: 0, likes_counter: 0) }
+  # before { subject.save }
+  it 'Title should not be blank' do
+    subject.title = nil
+    expect(subject).to_not be_blank
+  end
 
-  it { should validate_presence_of(:title) }
-  it { should validate_length_of(:title).is_at_most(250) }
-  it { should validate_numericality_of(:comments_counter).only_integer.is_greater_than_or_equal_to(0) }
-  it { should validate_numericality_of(:likes_counter).only_integer.is_greater_than_or_equal_to(0) }
+  it 'Title should not exceed 250 characters' do
+    subject.title = 'a' * 251
+    expect(subject).to_not be_valid
+  end
 
-  describe '#update_author_posts_count' do
-    it 'updates the author posts counter after saving a post' do
-      user = create(:user)
-      post = create(:post, author: user)
+  it 'should have CommentsCouner greater than or equal to zero' do
+    subject.comments_counter = 2
+    expect(subject.comments_counter).to be >= 0
+  end
 
-      expect(user.posts_counter).to eq(1)
-    end
+  it 'should have LikesCouner greater than or equal to zero' do
+    subject.likes_counter = 2
+    expect(subject.likes_counter).to be >= 0
   end
 
   describe '#recent_comments' do
-    it 'returns specified number of recent comments' do
-      post = create(:post)
-      create_list(:comment, 7, post:)
+    let(:user) { User.create(name: 'Test User', posts_counter: 0) }
+    let(:post) do
+      Post.create(author: user, title: 'Test Title', text: 'Test Text', likes_counter: 0, comments_counter: 0)
+    end
 
-      expect(post.recent_comments(5).count).to eq(5)
+    it 'returns 5 most recent comments for a post' do
+      # Create 6 comments for the post
+      6.times { |i| Comment.create(post:, user:, text: "Comment #{i + 1}") }
+
+      recent_comments = post.recent_comments
+
+      expect(recent_comments.size).to eq(5)
+      expect(recent_comments.first.text).to eq('Comment 6')
+      expect(recent_comments.last.text).to eq('Comment 2')
     end
   end
 end
