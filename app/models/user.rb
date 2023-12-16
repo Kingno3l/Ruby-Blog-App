@@ -3,6 +3,10 @@ class User < ApplicationRecord
   has_many :comments
   has_many :likes
 
+  validates :name, presence: true # Validates presence of name
+
+  validates :posts_counter, numericality: { only_integer: true, greater_than_or_equal_to: 0 } # Validates posts_counter as an integer greater than or equal to zero
+
   def recent_posts(count = 3)
     posts.order(created_at: :desc).limit(count)
   end

@@ -3,6 +3,12 @@ class Post < ApplicationRecord
   has_many :comments
   has_many :likes
 
+  validates :title, presence: true, length: { maximum: 250 } # Validates presence and maximum length of title
+
+  validates :comments_counter, numericality: { only_integer: true, greater_than_or_equal_to: 0 } # Validates comments_counter as an integer greater than or equal to zero
+
+  validates :likes_counter, numericality: { only_integer: true, greater_than_or_equal_to: 0 } # Validates likes_counter as an integer greater than or equal to zero
+
   after_save :update_author_posts_count
 
   def update_author_posts_count
