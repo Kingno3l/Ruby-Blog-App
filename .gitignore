@@ -4,6 +4,9 @@
 # or operating system, you probably want to add a global ignore instead:
 #   git config --global core.excludesfile '~/.gitignore_global'
 
+# .gitignore
+node_modules/
+
 # Ignore bundler config.
 /.bundle
 
@@ -32,7 +35,4 @@
 /public/assets
 
 # Ignore master key for decrypting credentials and more.
-/config/master.
-
-#node modules
-node_modules/
+/config/master.key
