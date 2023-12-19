@@ -1,5 +1,3 @@
-<% #This page displays all the post of a user %>
-
 <section class='user-posts-container'>
   <div class='user-posts-header'>
     <%= image_tag @user.photo, alt: 'user photo', class: 'user-posts-img' %>
@@ -7,8 +5,8 @@
       <p class='users-posts-name'><%= @user.name %></p>
       <p class='user-posts-number'>Number of posts: <%= @user.posts_counter %></p>
     </div>
-    </div>
-  
+  </div>
+
   <ul>
     <% @user.posts.each_with_index do |post, index| %>
       <li class='user-posts-item-container'>
@@ -18,9 +16,10 @@
           <p><%= post.text %></p>
           Comments: <%= post.comments_counter %>, Likes: <%= post.likes_counter %>
         </div>
-        <ul class= 'user-posts-comment-container'>
+        <ul class='user-posts-comment-container'>
           <% post.recent_comments.each do |comment| %>
-            <li><%= @user.name %>: <%= comment.text %></li>
+            <li><%= comment.user.name %>: <%= comment.text %></li>
+            <!-- Assuming comment.user.name represents the user who commented -->
           <% end %>
         </ul>
       </li>
@@ -28,7 +27,6 @@
   </ul>
 
   <button>
-  Pagination
-</button>
-
+    Pagination
+  </button>
 </section>
