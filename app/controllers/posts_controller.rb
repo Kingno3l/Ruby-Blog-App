@@ -1,23 +1,26 @@
 class PostsController < ApplicationController
-  before_action :set_user
-  before_action :set_post, only: [:show]
-
   def index
-    @posts = Post.all
-    render 'index'
+    @user = User.find(params[:user_id])
+    @posts = @user.posts
   end
 
   def show
-    render 'show'
+    @post = Post.find(params[:id])
   end
 
-  private
-
-  def set_user
-    @user = User.find(params[:user_id])
+  def new
+    @post = Post.new
   end
 
-  def set_post
-    @post = @user.posts.find(params[:id])
+  def create
+    @post = current_user.posts.build(params.require(:post).permit(:title, :text))
+    if @post.save
+      flash[:success] = 'Post saved successfully'
+      redirect_to user_posts_path
+    else
+      flash.now[:error] = 'Post not saved, try again later'
+      puts puts @post.errors.full_messages
+      render :new
+    end
   end
 end

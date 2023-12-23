@@ -1,6 +1,8 @@
 source 'https://rubygems.org'
 
-ruby '3.1.2'
+ruby '3.2.2'
+
+gem 'rubocop', '>= 1.0', '< 2.0'
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem 'rails', '~> 7.1.2'
@@ -44,11 +46,12 @@ gem 'bootsnap', require: false
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 # gem "image_processing", "~> 1.2"
 
+gem 'rails-controller-testing'
+
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem 'debug', platforms: %i[mri windows]
-  gem 'factory_bot_rails'
-  gem 'rspec-rails', '>= 3.9.0'
+  gem 'rspec-rails'
 end
 
 group :development do
@@ -65,6 +68,5 @@ end
 group :test do
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
   gem 'capybara'
-  gem 'rails-controller-testing'
   gem 'selenium-webdriver'
 end
