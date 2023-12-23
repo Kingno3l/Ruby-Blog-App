@@ -7,7 +7,7 @@ RSpec.describe UsersController, type: :request do
       expect(response).to have_http_status(:ok)
     end
 
-    it "renders the index template" do
+    it 'renders the index template' do
       get users_path
       expect(response).to render_template(:index)
     end
