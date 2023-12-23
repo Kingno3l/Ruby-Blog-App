@@ -14,7 +14,7 @@
       <% @user.recent_posts.each_with_index do |post, index| %>
         <li class='single-user-post-content'>
          <p>Post <%= index + 1 %></p>
-         <%= link_to post.title, user_posts_path(@user)%>
+         <%= link_to post.title, user_post_path(@user, post) %>
          <p><%= post.text %></p>
           Comments: <%= post.comments_counter %>, Likes: <%= post.likes_counter %>
         </li>
