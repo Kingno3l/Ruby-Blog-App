@@ -108,19 +108,6 @@
   overflow-y: scroll;
 }
 
-.form-label {
-  margin: 6px 0;
-}
-
-.form-text {
-  margin: 12px 0;
-}
-
-.post-form {
-  display: flex;
-  flex-direction: column;
-}
-
 @media screen and (min-width: 700px) {
   .user-post-numba {
     margin-left: 80%;

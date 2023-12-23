@@ -1,7 +1,4 @@
 Rails.application.routes.draw do
-  get 'comment/new'
-  get 'comment/create'
-  get 'likes/create'
   # get 'posts/index'
   # get 'posts/show'
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
@@ -11,12 +8,8 @@ Rails.application.routes.draw do
   get 'up' => 'rails/health#show', as: :rails_health_check
 
   root 'users#index'
-
-  resources :users, only: [:index,:show] do 
-  resources :posts, only: [:index,:show,:new,:create] do
-  resources :comments,only: [:new, :create]
-  resources :likes,only: [ :create]
-  end
+  resources :users, only: [:index, :show] do
+  resources :posts, only: [:index, :show]
   end
 
   # Defines the root path route ("/")
