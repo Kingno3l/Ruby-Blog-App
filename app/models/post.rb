@@ -5,7 +5,6 @@ class Post < ApplicationRecord
 
   # update the posts counter for a user by 1
   after_save :update_posts_counter
-  before_validation :set_defaults
 
   validates :title, presence: true, length: { maximum: 250 }
   validates :comments_counter, presence: true, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
@@ -20,10 +19,5 @@ class Post < ApplicationRecord
 
   def update_posts_counter
     author.increment!(:posts_counter)
-  end
-
-  def set_defaults
-    self.likes_counter ||= 0
-    self.comments_counter ||= 0
   end
 end
