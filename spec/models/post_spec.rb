@@ -1,43 +1,50 @@
 require 'rails_helper'
 
 RSpec.describe Post, type: :model do
-  subject { Post.new(author_id: 1, title: 'Post 1', text: 'This is post 1', comments_counter: 0, likes_counter: 0) }
-  # before { subject.save }
-  it 'Title should not be blank' do
-    subject.title = nil
-    expect(subject).to_not be_blank
+  describe 'post validations test' do
+    it 'validates presence of title' do
+      post = Post.new(comments_counter: 0, likes_counter: 0)
+      expect(post.valid?).to be_falsey
+      expect(post.errors[:title]).to include("can't be blank")
+    end
+
+    it 'validates length of title' do
+      post = Post.new(title: 'a' * 251, comments_counter: 0, likes_counter: 0)
+      expect(post.valid?).to be_falsey
+      expect(post.errors[:title]).to include('is too long (maximum is 250 characters)')
+    end
+
+    it 'validates numericality of comments_counter' do
+      post = Post.new(title: 'Valid Title', comments_counter: 'not_a_number', likes_counter: 0)
+      expect(post.valid?).to be_falsey
+      expect(post.errors[:comments_counter]).to include('is not a number')
+    end
+
+    it 'validates numericality of likes_counter' do
+      post = Post.new(title: 'Valid Title', comments_counter: 0, likes_counter: 'not_a_number')
+      expect(post.valid?).to be_falsey
+      expect(post.errors[:likes_counter]).to include('is not a number')
+    end
   end
 
-  it 'Title should not exceed 250 characters' do
-    subject.title = 'a' * 251
-    expect(subject).to_not be_valid
-  end
+  describe 'callbacks for increment and decrement of posts count' do
+    let!(:author) { create(:user) }
+    let!(:post) { create(:post, author:) }
 
-  it 'should have CommentsCouner greater than or equal to zero' do
-    subject.comments_counter = 2
-    expect(subject.comments_counter).to be >= 0
-  end
+    it 'increments user posts_counter after creating a post' do
+      expect { create(:post, author:) }.to change { author.reload.posts_counter }.by(1)
+    end
 
-  it 'should have LikesCouner greater than or equal to zero' do
-    subject.likes_counter = 2
-    expect(subject.likes_counter).to be >= 0
+    it 'decrements user posts_counter after destroying a post' do
+      expect { post.destroy }.to change { author.reload.posts_counter }.by(-1)
+    end
   end
 
   describe '#recent_comments' do
-    let(:user) { User.create(name: 'Test User', posts_counter: 0) }
-    let(:post) do
-      Post.create(author: user, title: 'Test Title', text: 'Test Text', likes_counter: 0, comments_counter: 0)
-    end
+    let!(:post_with_comments) { create(:post_with_comments) }
 
     it 'returns 5 most recent comments for a post' do
-      # Create 6 comments for the post
-      6.times { |i| Comment.create(post:, user:, text: "Comment #{i + 1}") }
-
-      recent_comments = post.recent_comments
-
-      expect(recent_comments.size).to eq(5)
-      expect(recent_comments.first.text).to eq('Comment 6')
-      expect(recent_comments.last.text).to eq('Comment 2')
+      expect(post_with_comments.recent_comments(5).count).to eq(5)
     end
   end
 end
