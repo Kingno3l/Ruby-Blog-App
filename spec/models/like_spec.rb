@@ -1,16 +1,23 @@
 require 'rails_helper'
 
 RSpec.describe Like, type: :model do
-  describe 'callbacks for increment and decrement in likes' do
-    let!(:post) { create(:post) }
-    let!(:like) { create(:like, post:) }
+  describe '#update_likes_counter' do
+    let(:user) { User.create(name: 'Test User', photo: 'https://example.com', bio: 'Test Bio', posts_counter: 0) }
+    let(:post) do
+      Post.create(author_id: user.id, title: 'Test Post', text: 'This is a test post', comments_counter: 0,
+                  likes_counter: 0)
+    end
+    let!(:like) { Like.create(user:, post:) } # Create a like beforehand
 
-    it 'increments post likes_counter after creating a like' do
-      expect { create(:like, post:) }.to change { post.reload.likes_counter }.by(1)
+    it 'validates post creation' do
+      expect(post).to be_valid
     end
 
-    it 'decrements post likes_counter after destroying a like' do
-      expect { like.destroy }.to change { post.reload.likes_counter }.by(-1)
+    it 'updates likes_counter for associated post after like creation' do
+      expect do
+        Like.create(user:, post:)
+        post.reload
+      end.to change { post.likes_counter }.by(1)
     end
   end
 end

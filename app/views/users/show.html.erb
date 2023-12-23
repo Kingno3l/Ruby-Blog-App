@@ -1,2 +1,29 @@
-<h1>User Posts</h1>
-<p>Here is the list of posts for a given user.</p>
+<% #This is for a single user %>
+
+<section class= 'single-user-container'>
+    <div class='single-user-content'>
+      <img src="<%= @user.photo %>" alt="picture of user" class='single-user-img'>
+      <div class= 'single-user-text'>
+        <p class='single-user-name'><%= @user.name %></p>
+        <p class= 'single-user-post-numba'>Number of posts: <%= @user.posts_counter %></p>
+      </div>
+      </div>
+      <p class= 'single-user-bio'>Bio: <%= @user.bio %></p>
+    
+    <ul class='single-user-post-container'>
+      <% @user.recent_posts.each_with_index do |post, index| %>
+        <li class='single-user-post-content'>
+         <p>Post <%= index + 1 %></p>
+         <%= link_to post.title, user_posts_path(@user)%>
+         <p><%= post.text %></p>
+          Comments: <%= post.comments_counter %>, Likes: <%= post.likes_counter %>
+        </li>
+      <% end %>
+    </ul>
+
+    <button>
+     <%= link_to 'See all Post', user_posts_path(@user) %>
+    </button>
+
+    
+</section>
