@@ -1,13 +1,12 @@
-<p>User ID: <%= @user.id %></p>
-<p>Here is a list of posts for user <%= @user.id %>:</p>
-<ul>
-  <% @posts.each do |post| %>
-    <li>
-      <p>Post ID: <%= post.id %></p>
-      <!-- Add other post details you want to display -->
-      <p>Title: <%= post.title %></p>
-      <p>Content: <%= post.content %></p>
-      <!-- Add any other post attributes here -->
-    </li>
-  <% end %>
-</ul>
+<section class = "post-section-container">
+    <div class = "post-section-content">
+        <p> <%= @post.title %> </p>
+        <p> Comments: <%= @post.comments_counter %>, Likes: <%= @post.likes_counter %></p>
+        <p> <%= @post.text %> </p>
+    </div>
+    <div class = "post-section-comment-container">
+        <% @post.comments.each do |comment| %>
+        <p> <%= comment.user.name %> : <%= comment.text %> </p>
+        <% end %>
+    </div>
+</section>

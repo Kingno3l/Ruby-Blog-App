@@ -1,17 +1,10 @@
 class PostsController < ApplicationController
-  before_action :find_user
-
   def index
+    @user = User.find(params[:user_id])
     @posts = @user.posts
   end
 
   def show
-    @post = @user.posts.find(params[:id])
-  end
-
-  private
-
-  def find_user
-    @user = User.find(params[:user_id])
+    @post = Post.find(params[:id])
   end
 end
