@@ -1,29 +1,19 @@
-<% #This is for a single user %>
+<!-- app/views/users/show.html.erb -->
 
-<section class= 'single-user-container'>
-    <div class='single-user-content'>
-      <img src="<%= @user.photo %>" alt="picture of user" class='single-user-img'>
-      <div class= 'single-user-text'>
-        <p class='single-user-name'><%= @user.name %></p>
-        <p class= 'single-user-post-numba'>Number of posts: <%= @user.posts_counter %></p>
-      </div>
-      </div>
-      <p class= 'single-user-bio'>Bio: <%= @user.bio %></p>
-    
-    <ul class='single-user-post-container'>
-      <% @user.recent_posts.each_with_index do |post, index| %>
-        <li class='single-user-post-content'>
-         <p>Post <%= index + 1 %></p>
-         <%= link_to post.title, user_post_path(@user, post) %>
-         <p><%= post.text %></p>
-          Comments: <%= post.comments_counter %>, Likes: <%= post.likes_counter %>
-        </li>
-      <% end %>
-    </ul>
+<div class="flex flex-col w-full">
+  <div id="userInfos">
+        <%= render partial: 'shared/user_show', locals: {user: @user} %>
 
-    <button>
-     <%= link_to 'See all Post', user_posts_path(@user) %>
-    </button>
+        <div id="bio" class="border-4 border-black mt-4 md:w-1/2 mx-auto mb-5">
+          <h2>Bio</h2>
+          <p><%= @user.bio %></p>
+        </div>
+  </div>
 
-    
-</section>
+  <% @user.posts.each do |post| %>
+    <%= render partial: 'shared/post', locals: {post: post} %>
+  <% end %>
+
+  <a id="view-all-posts" href="<%= @user.id %>/posts" class="mx-auto font-bold w-5/12 md:w-1/10 mb-5 border-solid border-4 border-gray-500 mt-5">See all posts</a>
+
+</div>
