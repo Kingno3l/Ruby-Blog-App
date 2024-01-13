@@ -1,0 +1,15 @@
+<!-- app/views/users/shared/_user_show.html.erb -->
+<!-- user partial used for User#show and post#index -->
+
+<div id="<%= user.id %>" class="flex justify-between items-center w-full md:w-1/2 mx-auto bg-white border-gray-200 rounded-lg shadow">
+  
+  <div class="w-1/4 rounded-lg shadow">
+    <img src="<%= user.photo %>" alt="User Photo">
+  </div>
+
+  <div class="w-2/3 h-full">
+    <h1 class="md:text-4xl font-extrabold text-xl"><%= user.name %></h1>
+    <div>Total posts: <span class="font-extrabold"><%=user.posts_counter %></span></div>
+  </div>
+
+</div>
