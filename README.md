@@ -1,26 +1,28 @@
-# Blog App
-
-The Blog app is a fully functional website that will show the list of posts and empower readers to interact with them by adding comments and liking posts.
-
-## Getting Started
-
-This is a Rails project.
-
 <a name="readme-top"></a>
+
+<div align="center">
+
+<!-- MAIN HEADING -->
+
+  <h3><b>BLOG APP</b></h3>
+
+</div>
+
+<!-- TABLE OF CONTENTS -->
 
 # 📗 Table of Contents
 
-- [Blog App](#blog-app)
-  - [Getting Started](#getting-started)
 - [📗 Table of Contents](#-table-of-contents)
-- [📖 \[Blog App\] ](#-blog-app-)
+- [BLOG WEBSITE ](#blog-website-)
   - [🛠 Built With ](#-built-with-)
     - [Tech Stack ](#tech-stack-)
     - [Key Features ](#key-features-)
   - [💻 Getting Started ](#-getting-started-)
-    - [Prerequisites](#prerequisites)
     - [Setup](#setup)
+    - [Prerequisites](#prerequisites)
+    - [Install](#install)
     - [Usage](#usage)
+    - [Run tests](#run-tests)
   - [👥 Authors ](#-authors-)
   - [🔭 Future Features ](#-future-features-)
   - [🤝 Contributing ](#-contributing-)
@@ -28,27 +30,23 @@ This is a Rails project.
   - [🙏 Acknowledgments ](#-acknowledgments-)
   - [📝 License ](#-license-)
 
-<!-- PROJECT DESCRIPTION -->
+<!-- INTRO -->
 
-# 📖 [Blog App] <a name="about-project"></a>
+# BLOG WEBSITE <a name="about-project"></a>
 
-**[Blog App]** is a fully functional website that will show the list of posts and empower readers to interact with them by adding comments and liking posts.
-
+> This application is a fully functional website that will show the list of posts and empower readers to interact with them by adding comments and liking posts.
 ## 🛠 Built With <a name="built-with"></a>
+
+1. RUBY
+2. RUBY ON RAILS
 
 ### Tech Stack <a name="tech-stack"></a>
 
 <details>
   <summary>Client</summary>
-  <ul></ul>
-    <li><a href="https://www.ruby-lang.org/en/">Ruby</a></li>
-  </ul>
-</details>
-
-<summary>Blog App</summary>
   <ul>
-    <li><a href="https://www.ruby-lang.org/en/">Ruby</a></li>
-    <li><a href="https://guides.rubyonrails.org/">Rails</a></li>
+    <li><a href="https://ruby.org/">RUBY</a></li>
+    <li><a href="https://ror.org/">RAILS</a></li>
   </ul>
 </details>
 
@@ -56,9 +54,10 @@ This is a Rails project.
 
 ### Key Features <a name="key-features"></a>
 
-- Show list of posts
-- Add comments
-- Like posts
+> - Create Posts
+> - Like Posts
+> - Add comments to posts
+  
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -66,47 +65,57 @@ This is a Rails project.
 
 ## 💻 Getting Started <a name="getting-started"></a>
 
-To get a local copy up and running, follow these steps.
+> To get a local copy of the project, use this link:
 
-### Prerequisites
+```sh
+cd blog_app
+git@github.com:Kingno3l/Ruby-Blog-App.git
+```
 
-In order to run this project you need:
-- postgresql
-- ruby
-- rails
+<!-- SETUP -->
 
 ### Setup
 
-Clone this repository to your desired folder:
-
-<!--
-Example commands:
+To setup this project, run this command:
 
 ```sh
-  cd my-folder
-  git clone git@github.com:rmiyoyo/blog-app.git
+rails server or 
+rails s
 ```
---->
+
+### Prerequisites
+
+1. A Browser (Preferably Google Chrome)
+2. A Code Editor
+3. Internet Connection
+4. Git
+
+<!-- INSTALL -->
+
+### Install
+
+Install this project with node modules and npm.
 
 ### Usage
 
 To run the project, execute the following command:
-```sh
-  cd blog-app
-  rails s
-```
-To test the project, execute the following command:
-```sh
-  cd blog-app
-  rspec spec
-```
-<!--
-Example command:
 
 ```sh
-  cd blog-app;
+rails server or 
+rails s
 ```
---->
+
+### Run tests
+
+To test the project, execute the following command:
+
+```sh
+rspec
+```
+
+<!-- ## 🚀 Live Demo <a name="live-demo"></a> -->
+
+<!-- - [Live Demo Link]() -->
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -114,36 +123,37 @@ Example command:
 
 ## 👥 Authors <a name="authors"></a>
 
-👤 **Raphael Miyoyo**
+👤 **King Immanuel**
 
-- GitHub: [@rmiyoyo](https://github.com/rmiyoyo)
-- Twitter: [@r_miyoyo](https://twitter.com/r_miyoyo)
-- LinkedIn: [LinkedIn](https://linkedin.com/in/raphael-miyoyo)
+- GitHub: [Kingno3l](https://github.com/Kingno3l)
+- Twitter: [King Immanuelhttps://twitter.com/Kingnno3l_)
+- LinkedIn: [Kingno3l](https://www.linkedin.com/in/Kingno3l)
 
-<!-- FUTURE FEATURES -->
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## 🔭 Future Features <a name="future-features"></a>
 
-- [ ] Host the project online
-- [ ] Design a User Interface
-- [ ] Add second database for posts
+- [ ] **Remove posts**
+- [ ] **Unlike posts**
+- [ ] **Repost posts**
+
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-<!-- CONTRIBUTING -->
+<!-- CONTRIBUTION -->
 
 ## 🤝 Contributing <a name="contributing"></a>
 
 Contributions, issues, and feature requests are welcome!
 
-Feel free to check the [issues page](../../issues/).
-
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-<!-- SUPPORT -->
+<!--SUPPORT -->
 
 ## ⭐️ Show your support <a name="support"></a>
 
-If you like this project...
+> If you like this project, please give it some starts ⭐️⭐️⭐️⭐️⭐️
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -151,7 +161,7 @@ If you like this project...
 
 ## 🙏 Acknowledgments <a name="acknowledgements"></a>
 
-Thank you for stopping by!
+> Special acknowledgement to [@microverseinc](https://github.com/microverseinc)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -160,6 +170,5 @@ Thank you for stopping by!
 ## 📝 License <a name="license"></a>
 
 This project is [MIT](./LICENSE) licensed.
-
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
