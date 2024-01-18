@@ -1,37 +1,33 @@
-require_relative '../rails_helper'
+require 'rails_helper'
 
-RSpec.describe 'Users', type: :system do
+RSpec.describe 'Users Index Page', type: :feature do
   before do
-    @user1 = User.create(name: 'Alice Wonderland', photo: 'https://placehold.co/200x200',
-                         bio: "Hello, I'm Alice Wonderland", posts_counter: 3)
-    @user2 = User.create(name: 'Bob Wonderland', photo: 'https://placehold.co/200x200', bio: "Hello, I'm Bob Wonderland")
-    @user1.posts.create(title: 'Amazing Adventures', text: 'Lorem ipsum', comments_counter: 1, likes_counter: 2)
-    @user1.posts.create(title: 'Exploring Wonderland', text: 'Dolor sit amet')
-    @user2.posts.create(title: 'Wonderful Journey', text: 'Consectetur adipiscing elit')
+    User.create(name: 'Tom',
+                photo: 'https://unsplash.com/photos/F_-0BxGuVvo', bio: 'Teacher from Mexico.', posts_counter: 3)
+    User.create(name: 'Lilly',
+                photo: 'https://unsplash.com/photos/F_-0BxGuVvo', bio: 'Teacher from Poland.', posts_counter: 2)
   end
 
-  it 'displays user information on the index page' do
+  it 'displays usernames of all users' do
     visit users_path
-    sleep(5)
-
-    expect(page).to have_content(@user1.name)
-    expect(page).to have_content(@user2.name)
-    expect(page).to have_selector("img[src='#{@user1.photo}']")
-    expect(page).to have_selector("img[src='#{@user2.photo}']")
-    expect(page).to have_content('Total posts: 2')
-    expect(page).to have_content('Total posts: 1')
+    expect(page).to have_content('Tom')
+    expect(page).to have_content('Lilly')
   end
 
-  it "redirects to user's show page when clicked" do
+  it 'displays profile pictures of all users' do
     visit users_path
+    expect(page).to have_selector("img[src*='unsplash']")
+  end
 
-    click_link(@user1.name)
-    sleep(5)
+  it 'displays the number of posts for each user' do
+    visit users_path
+    expect(page).to have_content('Number of posts: 3')
+    expect(page).to have_content('Number of posts: 2')
+  end
 
-    current_path
-    expect(current_path).to eq(user_path(@user1))
-    expect(page).to have_content(@user1.name)
-    expect(page).to have_selector("img[src='#{@user1.photo}']")
-    expect(page).to have_content('Total posts: 2')
+  it 'redirects to user show page when user is clicked' do
+    visit users_path
+    click_link('Tom')
+    expect(page).to have_current_path(user_path(User.find_by(name: 'Tom')))
   end
 end

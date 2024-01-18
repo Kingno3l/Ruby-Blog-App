@@ -126,7 +126,7 @@ rspec
 👤 **King Immanuel**
 
 - GitHub: [Kingno3l](https://github.com/Kingno3l)
-- Twitter: [King Immanue](https://twitter.com/Kingnno3l_)
+- Twitter: [King Immanuel](https://twitter.com/Kingnno3l_)
 - LinkedIn: [Kingno3l](https://www.linkedin.com/in/Kingno3l)
 
 
