@@ -1,0 +1,19 @@
+<section class="sign-up-section">
+  <div class="sign-up-section-content">
+    <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+      <%= render "devise/shared/error_messages", resource: resource %>
+    
+      <div class="sign-up-section-inputs">
+        <%= f.text_field :name, autofocus: true, placeholder: "Name", class: "sign-up-name" %>
+        <%= f.email_field :email, autocomplete: "email", placeholder: "Email", class: "sign-up-email" %>
+        <%= f.password_field :password, autocomplete: "new-password", placeholder: "Password(6 characters minimum)", class: "sign-up-password" %>
+        <%= f.password_field :password_confirmation, autocomplete: "new-password", placeholder: "Password Confirmation", class: "sign-up-confirm-pass" %>
+        <div class="actions">
+          <%= f.submit "Sign up", class: "sign-up-btn" %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+  
+  <%= render "devise/shared/links" %>
+</section>

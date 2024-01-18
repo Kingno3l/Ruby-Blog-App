@@ -1,13 +1,43 @@
-<!-- app/views/posts/index.html.erb -->
+<% #This page displays all the post of a user %>
 
-<div>
-  <%= render partial: 'shared/user_show', locals: {user: @user} %>
+<section class='user-posts-container'>
+  <div class='user-posts-header'>
+    <img src="<%= @user.photo %>" alt="user photo" class='user-posts-img'>
+    <div class='user-posts-text-container'>
+      <p class='users-posts-name'><%= @user.name %></p>
+      <p class='user-posts-number'>Number of posts: <%= @user.posts_counter %></p>
+    </div>
+    </div>
+    <%= link_to new_user_post_url do %>
+    <button class="create-btn" >Create Post</button>
+   <% end %>
+  
+  <ul>
+    <% @user.posts.each_with_index do |post, index| %>
+      <li class='user-posts-item-container'>
+        <div class='user-posts-item-content'>
+          Post <%= index + 1 %> <br><br>
+          <%= link_to post.title, user_post_path(@user, post) %>
+          <p><%= post.text %></p>
+          Comments: <%= post.comments_counter %>, Likes: <%= post.likes_counter %>
+         <button class="likes-btn" >
+            <%= render partial: 'likes/likes_button',locals:{post:post} %>
+         </button>
+          <%= link_to new_user_post_comment_url(post_id: post.id) do %>
+            <button class="comment-btn" >Comment</button>
+          <% end %>
+        </div>
+        <ul class= 'user-posts-comment-container'>
+          <% post.recent_comments.each do |comment| %>
+            <li><%= @user.name %>: <%= comment.text %></li>
+          <% end %>
+        </ul>
+      </li>
+    <% end %>
+  </ul>
 
-  <% @posts.each do |post| %>
-    <%= render partial: 'shared/post', locals: {post: post} %>
-    <%= render partial: 'shared/comment', locals: {post: post} %>
-  <% end %>
+  <button>
+  Pagination
+</button>
 
-  <button class="mx-auto font-bold w-5/12 md:w-1/10 mb-5 border-solid border-4 border-gray-500">Pagination</button>
-
-</div>
+</section>

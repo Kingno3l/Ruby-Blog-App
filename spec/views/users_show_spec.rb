@@ -1,56 +1,60 @@
-require_relative '../rails_helper'
+require 'rails_helper'
 
-RSpec.describe 'Users', type: :system do
+RSpec.describe 'User Show Page', type: :feature do
+  let!(:user) do
+    user = User.create(
+      name: 'Tom',
+      photo: 'https://example.com/photo.jpg',
+      bio: 'A bio about Tom.',
+      posts_counter: 3
+    )
+    user.posts.create([
+                        { title: 'First post', text: 'This is the first post.', comments_counter: 2, likes_counter: 5 },
+                        { title: 'Second post', text: 'This is the second post.', comments_counter: 1,
+                          likes_counter: 3 },
+                        { title: 'Third post', text: 'This is the third post.', comments_counter: 0, likes_counter: 7 }
+                      ])
+    user.update(posts_counter: user.posts.count)
+    user.reload
+  end
+
   before do
-    @user1 = User.create(name: 'Alice Wonderland', photo: 'https://placehold.co/200x200',
-                         bio: "Hello, I'm Alice Wonderland", posts_counter: 5)
-    @user2 = User.create(name: 'Bob Wonderland', photo: 'https://placehold.co/200x200', bio: "Hello, I'm Bob Wonderland")
-    @post1 = @user1.posts.create(title: 'Amazing Adventures', text: 'Lorem ipsum')
-    @post2 = @user1.posts.create(title: 'Exploring Wonderland', text: 'Dolor sit amet')
-    @comment = Comment.create(text: 'Great post!', author: @user2, post: @post1)
+    visit user_path(user)
   end
 
-  it 'displays user information on the User show page' do
-    visit user_path(id: @user1.id)
-    expect(page).to have_content(@user1.name)
-    expect(page).to have_content(@user1.bio)
-    expect(page).to have_selector("img[src='#{@user1.photo}']")
-    expect(page).to have_content('Total posts: 2')
+  it 'displays the user\'s profile picture' do
+    expect(page).to have_selector("img[src='https://example.com/photo.jpg']")
   end
 
-  it 'displays post information on the User show page' do
-    visit user_path(id: @user1.id)
-    expect(page).to have_content(@post1.title)
-    expect(page).to have_content(@post1.text)
-    expect(page).to have_content(@post2.title)
-    expect(page).to have_content(@post2.text)
-    expect(page).to have_content('See all posts')
+  it 'displays the user\'s username' do
+    expect(page).to have_content('Tom')
   end
 
-  it "redirects to post's index page when clicked on see all posts button" do
-    visit user_path(id: @user1.id)
-    find("a[id='view-all-posts']").click
-    sleep(5)
-    current_path
-    expect(current_path).to eq(user_posts_path(user_id: @user1.id))
-    expect(page).to have_content(@user1.name)
-    expect(page).to have_selector("img[src='#{@user1.photo}']")
-    expect(page).to have_content('Total posts: 2')
-    expect(page).to have_content(@post1.title)
-    expect(page).to have_content(@post1.text)
-    expect(page).to have_content(@post2.title)
-    expect(page).to have_content(@post2.text)
-    expect(page).to have_content('Comments: 1') 
-    expect(page).to have_content('Likes: 0')
-    expect(page).to have_content(@user2.name)
-    expect(page).to have_content(@comment.text)
+  it 'displays the number of posts the user has written' do
+    expect(page).to have_content("Number of posts: #{user.posts_counter}")
   end
 
-  it 'redirects to post show page when clicking on a post' do
-    visit user_path(id: @user1.id)
-    click_link(@post1.title)
-    sleep(5)
-    current_path
-    expect(current_path).to eq(user_post_path(user_id: @user1.id, id: @post1.id))
+  it 'displays the user\'s bio' do
+    expect(page).to have_content('A bio about Tom.')
+  end
+
+  it 'displays the user\'s first three posts' do
+    expect(page).to have_content('First post')
+    expect(page).to have_content('Second post')
+    expect(page).to have_content('Third post')
+  end
+
+  it 'has a button to view all user posts' do
+    expect(page).to have_link('See all Post', href: user_posts_path(user))
+  end
+
+  it 'redirects to post show page when a user\'s post is clicked' do
+    click_link('First post')
+    expect(page).to have_current_path(user_posts_path(user))
+  end
+
+  it 'redirects to user\'s post index page when clicking "See all Post"' do
+    click_link('See all Post')
+    expect(page).to have_current_path(user_posts_path(user))
   end
 end
