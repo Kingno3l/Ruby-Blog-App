@@ -1,25 +1,47 @@
-<!-- app/views/posts/show.html.erb -->
-<div class="flex-col">
-  <div id="post" class="border-solid border-4 border-black md:w-1/2 mx-auto w-full mb-5">
-    <div class="flex justify-between">
-      <div>
-        <h2 class="font-bold ml-3"><%= @post.title %><span class="font-normal"> by <%= @user.name %></span></h2>
-      </div>
-
-      <div class="mr-5">
-        <p>Comments: <span class="font-bold"><%= @post.comments_counter%>, </span>Likes: <span class="font-bold"><%= @post.likes_counter %></span></p>
-      </div>
+<div class="page">
+  <div class="post-container">
+    <div class="name-and-counter">
+      <p>Title: <%= @post.title %> -- by <%= @user.name %></p>
+      <p>Comments: <%= @post.comments_counter %>, Likes: <%= @post.likes_counter %></p>
     </div>
-
-    <div>
-      <p class="mt-5 ml-3" ><%= @post.text %></p>
-    </div>
-
-    <div class="mb-5 mt-5 ml-3 flex gap-5">
-      <a class="border-solid border-4 border-black cursor-pointer"><%= render partial: 'shared/add_like' %></a>
-      <a href="/users/<%= @user.id %>/posts/<%= @post.id %>/comments/new" class="border-4 border-solid border-black"> New comment</a>
-    </div>
+    <p><%= @post.text %></p>
   </div>
-
-  <%= render partial: 'shared/comment', locals: {post: @post} %>
+  <%= render partial: "shared/comment_container", locals: { user: @user, post: @post } %>
+  <div class="like-and-comment">
+    <%= link_to "Add Comment", new_user_post_comment_path(@user, @post) %>
+    <%= form_with url: user_post_likes_path(@post.author.id, @post.id) do |form| %>
+      <%= form.submit 'Like' %>
+    <% end %>
+  </div>
+  <% if can?(:destroy, @post) %>
+    <%= button_to 'Delete Post', user_post_path(@user, @post), method: :delete %>
+  <% end %>
 </div>
+
+<style>
+    .page {
+        display: grid;
+        place-items: center;
+    }
+
+    .post-container {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        width: 440px;
+        padding: 10px;
+        border: 2px solid black;
+        margin: 2px;
+    }
+
+    .name-and-counter {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .like-and-comment {
+        display: flex;
+        gap: 10px;
+        margin: 10px;
+    }
+</style>

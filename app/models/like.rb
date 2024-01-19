@@ -1,12 +1,14 @@
 class Like < ApplicationRecord
-  belongs_to :author, foreign_key: 'author_id', class_name: 'User'
+  belongs_to :user
   belongs_to :post
 
-  after_save :update_likes_counter_for_a_post
+  validates :user_id, uniqueness: { scope: :post_id }
+
+  after_save :update_post_likes_counter
 
   private
 
-  def update_likes_counter_for_a_post
+  def update_post_likes_counter
     post.update(likes_counter: post.likes.count)
   end
 end

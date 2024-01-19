@@ -1,19 +1,47 @@
-<!-- app/views/users/show.html.erb -->
+<div class="page">
+  <%= render partial: "shared/info_container", locals: { user: @user } %>
 
-<div class="flex flex-col w-full">
-  <div id="userInfos">
-        <%= render partial: 'shared/user_show', locals: {user: @user} %>
-
-        <div id="bio" class="border-4 border-black mt-4 md:w-1/2 mx-auto mb-5">
-          <h2>Bio</h2>
-          <p><%= @user.bio %></p>
-        </div>
+  <div class="bio-container">
+    <p class="bio">Bio</p>
+    <p class="bio-text"><%= @user.bio %></p>
   </div>
 
   <% @user.posts.each do |post| %>
-    <%= render partial: 'shared/post', locals: {post: post} %>
+    <div class="post-partial">
+      <%#= render partial: "shared/post_container", locals: { post: post } %>
+
+      <%= link_to user_post_path(@user, post) do %>
+        <%= render partial: "shared/post_container", locals: { post: post } %>
+      <% end %>
+    </div>
   <% end %>
-
-  <a id="view-all-posts" href="<%= @user.id %>/posts" class="mx-auto font-bold w-5/12 md:w-1/10 mb-5 border-solid border-4 border-gray-500 mt-5">See all posts</a>
-
+  <%= link_to users_path do %>
+    <button class="see-all-posts">See all posts</button>
+  <% end %>
 </div>
+
+
+<style>
+    .page {
+        display: grid;
+        place-items: center;
+    }
+
+    .bio-container {
+        width: 440px;
+        padding: 10px;
+        border: 2px solid black;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin: 10px;
+    }
+
+    .post-partial {
+        margin: 10px;
+    }
+
+    .see-all-posts {
+        margin: 10px;
+    }
+</style>
