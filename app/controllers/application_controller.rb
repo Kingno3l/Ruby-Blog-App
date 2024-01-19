@@ -1,9 +1,15 @@
 class ApplicationController < ActionController::Base
+  before_action :authenticate_user!
+  before_action :configure_permitted_parameters, if: :devise_controller?
+
   protect_from_forgery with: :exception
+  respond_to :json
 
-  helper_method :current_user
+  protected
 
-  def current_user
-    @current_user ||= User.first
+  def configure_permitted_parameters
+    attributes = [:name]
+    devise_parameter_sanitizer.permit(:sign_up, keys: attributes)
+    devise_parameter_sanitizer.permit(:account_update, keys: attributes)
   end
 end
