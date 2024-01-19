@@ -1,11 +1,18 @@
 class PostsController < ApplicationController
+  load_and_authorize_resource # except: %i[index show]
+  before_action :set_user, only: %i[index show new create]
+
   def index
-    @user = User.includes(:posts).find(params[:user_id])
-    @posts = @user.posts.includes(:author, :likes, :comments)
+    @user = User.find(params[:user_id])
+    @posts = Post.includes(:comments, :author)
+      .where(author_id: @user.id)
+      .order(created_at: :desc)
+      .paginate(page: params[:page], per_page: 5)
   end
 
   def show
-    @post = Post.find(params[:id])
+    @post = Post.includes(:author, :comments).find_by(author_id: params[:user_id], id: params[:id])
+    @comments = @post.comments
   end
 
   def new
@@ -13,14 +20,37 @@ class PostsController < ApplicationController
   end
 
   def create
-    @post = current_user.posts.build(params.require(:post).permit(:title, :text))
+    @post = @user.posts.new(post_params)
     if @post.save
-      flash[:success] = 'Post saved successfully'
-      redirect_to user_posts_path
+      redirect_to user_post_path(@user, @post), notice: 'Post was successfully created.'
     else
-      flash.now[:error] = 'Post not saved, try again later'
-      puts puts @post.errors.full_messages
       render :new
     end
+  end
+
+  def destroy
+    @user = User.find(params[:user_id])
+    @post = @user.posts.find(params[:id])
+
+    if @post.destroy
+      redirect_to user_posts_path(@user)
+      update_user_posts_counter
+    else
+      alert 'Error'
+    end
+  end
+
+  private
+
+  def set_user
+    @user = current_user
+  end
+
+  def post_params
+    params.require(:post).permit(:title, :text)
+  end
+
+  def update_user_posts_counter
+    @post.author.update(posts_counter: @post.author.posts.count)
   end
 end

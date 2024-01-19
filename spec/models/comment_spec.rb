@@ -1,36 +1,21 @@
 require 'rails_helper'
 
 RSpec.describe Comment, type: :model do
-  describe 'after_save update_comments_counter' do
-    let(:user) do
-      User.create(
-        name: 'Test User',
-        photo: 'https://example.com',
-        bio: 'Test Bio',
-        posts_counter: 0
-      )
-    end
+  subject { Comment.new(text: 'comment one') }
+  before { subject.save }
 
-    let(:post) do
-      Post.create(
-        author_id: user.id,
-        title: 'Test Post',
-        text: 'This is a test post',
-        comments_counter: 0,
-        likes_counter: 0
-      )
-    end
+  it 'should raise error without post' do
+    expect { subject.comment_counter }.to raise_error(NoMethodError)
+  end
 
-    let(:comment) do
-      Comment.new(
-        user:,
-        post:,
-        text: 'Test Comment'
-      )
-    end
+  it 'should displays five recent comments when called' do
+    post = Post.create(title: 'Sample Post', author: User.create(name: 'User'))
 
-    it 'updates comments_counter for associated post after comment save' do
-      expect { comment.save }.to change { Post.find(post.id).comments_counter }.by(1)
-    end
+    comments = 6.times.map { |i| post.comments.create(text: "Comment #{i}", user: User.create(name: "User#{i}")) }
+
+    post.reload
+
+    expect(post.recent_comments.length).to eq(5)
+    expect(post.recent_comments).to eq(comments.last(5).reverse)
   end
 end

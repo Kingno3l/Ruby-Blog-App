@@ -1,29 +1,46 @@
 class CommentsController < ApplicationController
-  before_action :set_user_and_post
+  load_and_authorize_resource
 
   def new
+    @user = User.find(params[:user_id])
+    @post = Post.find(params[:post_id])
     @comment = Comment.new
   end
 
   def create
-    @comment = @post.comments.build(comment_params)
+    @user = User.find(params[:user_id])
+    @post = Post.find(params[:post_id])
+    @comment = @post.comments.new(comment_params)
+    @comment.user_id = @user.id
+
     if @comment.save
-      flash[:success] = 'Comment saved successfully'
-      redirect_to user_post_path(@post, @user)
+      redirect_to user_post_path(@user, @post), notice: 'Comment created!'
     else
-      flash.now[:error] = 'Post not saved, try again later'
+      flash.now[:errors] = 'Invalid comment!'
       render :new
+    end
+  end
+
+  def destroy
+    @user = User.find(params[:user_id])
+    @post = Post.find(params[:post_id])
+    @comment = @post.comments.find(params[:id])
+
+    if @comment.destroy
+      redirect_to user_post_path(@user, @post), notice: 'Comment deleted!'
+      update_post_comments_counter
+    else
+      redirect_to user_post_path(@user, @post), alert: 'Invalid Operation'
     end
   end
 
   private
 
-  def set_user_and_post
-    @user = User.find(params[:user_id])
-    @post = @user.posts.find(params[:post_id])
+  def comment_params
+    params.require(:comment).permit(:text)
   end
 
-  def comment_params
-    params.require(:comment).permit(:text).merge(user_id: current_user.id)
+  def update_post_comments_counter
+    @post.update(comments_counter: @post.comments.count)
   end
 end

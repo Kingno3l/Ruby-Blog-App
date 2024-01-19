@@ -1,40 +1,38 @@
 require 'rails_helper'
 
 RSpec.describe User, type: :model do
-  let(:user) { User.create(name: 'Joy', photo: 'https://www.google.com/url', bio: 'she is a software developer', posts_counter: 0) }
-
-  it 'Name should not be blank' do
-    user.name = nil
-    expect(user).to_not be_blank
+  describe 'associations' do
+    it 'has many posts' do
+      user = User.create(name: 'John Doe')
+      3.times { user.posts.create(title: 'Test Post') }
+      expect(user.posts.count).to eq(3)
+    end
   end
 
-  it 'should have PostCouner greater than or equal to zero' do
-    user.posts_counter = 2
-    expect(user.posts_counter).to be >= 0
+  describe 'validations' do
+    it 'validates presence of name' do
+      user = User.create(name: '')
+      expect(user.errors[:name]).to include("can't be blank")
+    end
   end
 
   describe '#recent_posts' do
-    it 'returns 3 most recent posts for a user' do
-      # Save the user first
-      # user.save
-      expect(user).to be_valid
+    it 'returns the most recent posts' do
+      user = User.create(name: 'John Doe')
+      3.times { |i| user.posts.create(title: "Post #{i}") }
 
-      # Creating 4 posts for the user
-      post1 = Post.create(author_id: user.id, title: 'Post 1', text: 'This is post 1', comments_counter: 0,
-                          likes_counter: 0)
-      post2 = Post.create(author_id: user.id, title: 'Post 2', text: 'This is post 2', comments_counter: 0,
-                          likes_counter: 0)
-      post3 = Post.create(author_id: user.id, title: 'Post 3', text: 'This is post 3', comments_counter: 0,
-                          likes_counter: 0)
+      recent_posts = user.recent_posts
+      expect(recent_posts.count).to eq(3)
+      expect(recent_posts.first.title).to eq('Post 2')
+    end
 
-      # Ensure that the post is created successfully
-      expect(post3).to be_valid
+    it 'limits the number of posts returned' do
+      user = User.create(name: 'John Doe')
+      5.times { |i| user.posts.create(title: "Post #{i}") }
 
-      result = user.recent_posts.to_a
-
-      expect(result).to be_an(Array)
-      expect(result.size).to eq(3)
-      expect(result).to include(post1, post2, post3)
+      recent_posts = user.recent_posts(2)
+      expect(recent_posts.count).to eq(2)
+      expect(recent_posts.first.title).to eq('Post 4')
     end
   end
 end

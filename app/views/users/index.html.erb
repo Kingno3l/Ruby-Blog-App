@@ -1,17 +1,12 @@
-<% # This is to display all the users in the database %>
-<ul class='user-item-container'>
+<div class="page">
   <% @users.each do |user| %>
-    <li class='user-item-content'>
-      <% if user.photo? %>
-        <img src="<%= user.photo %>" alt="picture of user" class='user-item-img'>
-      <% else %>
-        <!-- Provide a fallback or placeholder image if user.photo is not attached -->
-        <img src="<%= asset_path('fallback_img.png') %>" alt="picture of user" class='user-item-img'>
-      <% end %>
-      <div class='user-item-text'>
-        <p class='user-name'><%= link_to user.name, user_path(user) %></p>
-        <p class='user-post-numba'> Number of posts: <%= user.posts_counter %></p>
-      </div>
-    </li>
+    <%= render partial: "shared/info_container", locals: { user: user } %>
   <% end %>
-</ul>
+</div>
+
+<style>
+    .page {
+        display: grid;
+        place-items: center;
+    }
+</style>

@@ -1,6 +1,9 @@
-<h1>Create a comment for the post</h1>
-<%= form_with model:@comment, url: user_post_comments_path, method: :post,local: true do |form| %>
-    <%= form.label:text, "Post comment" %>
-    <%= form.text_field:text %>
-    <%= form.submit 'Submit comment ' %>
+<%= form_with model: [@user, @post, @comment], url: user_post_comments_path do |f| %>
+  <div>
+    <%= f.label :text, required: true %>
+    <%= f.text_field :text, required: true %>
+  </div>
+  <div>
+    <%= f.submit "Submit" %>
+  </div>
 <% end %>
